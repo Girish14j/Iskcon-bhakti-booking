@@ -4,10 +4,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
 import { useToast } from "@/hooks/use-toast";
 
+type ProfileType = {
+  id: string;
+  full_name: string | null;
+  phone_number: string | null;
+  is_admin: boolean;
+  created_at: string;
+};
+
 type AuthContextType = {
   session: Session | null;
   user: User | null;
-  profile: any | null;
+  profile: ProfileType | null;
   isAdmin: boolean;
   isLoading: boolean;
   signUp: (email: string, password: string, fullName: string, phoneNumber?: string) => Promise<{error: any | null}>;
@@ -20,7 +28,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<any | null>(null);
+  const [profile, setProfile] = useState<ProfileType | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
@@ -67,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) {
         console.error('Error fetching user profile:', error);
       } else if (data) {
-        setProfile(data);
+        setProfile(data as ProfileType);
         setIsAdmin(data.is_admin);
       }
     } catch (error) {
