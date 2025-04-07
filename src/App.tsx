@@ -9,6 +9,9 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import Halls from "./pages/Halls";
+import DateTimeSelection from "./pages/DateTimeSelection";
+import BookingDetails from "./pages/BookingDetails";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +26,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/halls" element={<Halls />} />
+            <Route path="/date-time" element={<DateTimeSelection />} />
+            <Route path="/booking-details" element={<BookingDetails />} />
             {/* Additional routes will be added later */}
             <Route path="*" element={<NotFound />} />
           </Routes>
