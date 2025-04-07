@@ -9,6 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          admin_notes: string | null
+          attendees: number
+          booking_date: string
+          created_at: string | null
+          end_time: string
+          hall_id: string
+          id: string
+          purpose: string
+          start_time: string
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          attendees: number
+          booking_date: string
+          created_at?: string | null
+          end_time: string
+          hall_id: string
+          id?: string
+          purpose: string
+          start_time: string
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          attendees?: number
+          booking_date?: string
+          created_at?: string | null
+          end_time?: string
+          hall_id?: string
+          id?: string
+          purpose?: string
+          start_time?: string
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       hallbooking: {
         Row: {
           created_at: string
@@ -21,6 +66,63 @@ export type Database = {
         Update: {
           created_at?: string
           id?: number
+        }
+        Relationships: []
+      }
+      halls: {
+        Row: {
+          capacity: number
+          created_at: string | null
+          description: string
+          hourly_rate: number
+          id: string
+          image_url: string | null
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          capacity: number
+          created_at?: string | null
+          description: string
+          hourly_rate: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          capacity?: number
+          created_at?: string | null
+          description?: string
+          hourly_rate?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          is_admin: boolean
+          phone_number: string | null
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          is_admin?: boolean
+          phone_number?: string | null
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          is_admin?: boolean
+          phone_number?: string | null
         }
         Relationships: []
       }

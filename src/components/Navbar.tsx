@@ -1,11 +1,21 @@
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, profile, isAdmin, signOut } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-iskcon-gold/20 bg-background/95 backdrop-blur">
@@ -26,15 +36,53 @@ const Navbar = () => {
           <nav className="hidden md:flex items-center gap-6">
             <Link to="/" className="text-foreground hover:text-iskcon-saffron transition-colors">Home</Link>
             <Link to="/halls" className="text-foreground hover:text-iskcon-saffron transition-colors">Our Halls</Link>
-            <Link to="/booking" className="text-foreground hover:text-iskcon-saffron transition-colors">Book Now</Link>
+            {user && (
+              <Link to="/booking" className="text-foreground hover:text-iskcon-saffron transition-colors">Book Now</Link>
+            )}
             <Link to="/testimonials" className="text-foreground hover:text-iskcon-saffron transition-colors">Testimonials</Link>
             <Link to="/contact" className="text-foreground hover:text-iskcon-saffron transition-colors">Contact</Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-foreground hover:text-iskcon-saffron transition-colors">Admin</Link>
+            )}
           </nav>
 
           <div className="flex items-center gap-4">
-            <Button className="hidden sm:flex bg-iskcon-saffron hover:bg-iskcon-gold text-white">
-              Book A Hall
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="rounded-full w-10 h-10 p-0">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>{profile?.full_name || user.email}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/my-bookings">My Bookings</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile">Profile</Link>
+                  </DropdownMenuItem>
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link to="/admin">Admin Dashboard</Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut} className="text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button className="hidden sm:flex bg-iskcon-saffron hover:bg-iskcon-gold text-white" asChild>
+                <Link to="/auth">Sign In</Link>
+              </Button>
+            )}
             <button
               className="block md:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -54,14 +102,30 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden border-t border-iskcon-gold/20">
           <nav className="iskcon-container py-4 flex flex-col gap-4">
-            <Link to="/" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted">Home</Link>
-            <Link to="/halls" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted">Our Halls</Link>
-            <Link to="/booking" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted">Book Now</Link>
-            <Link to="/testimonials" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted">Testimonials</Link>
-            <Link to="/contact" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted">Contact</Link>
-            <Button className="mt-2 bg-iskcon-saffron hover:bg-iskcon-gold text-white">
-              Book A Hall
-            </Button>
+            <Link to="/" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Home</Link>
+            <Link to="/halls" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Our Halls</Link>
+            {user && (
+              <Link to="/booking" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Book Now</Link>
+            )}
+            <Link to="/testimonials" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Testimonials</Link>
+            <Link to="/contact" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Contact</Link>
+            {isAdmin && (
+              <Link to="/admin" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Admin</Link>
+            )}
+            {user ? (
+              <>
+                <Link to="/my-bookings" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>My Bookings</Link>
+                <Link to="/profile" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Profile</Link>
+                <Button variant="destructive" className="mt-2" onClick={() => { signOut(); setIsMenuOpen(false); }}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </Button>
+              </>
+            ) : (
+              <Button className="mt-2 bg-iskcon-saffron hover:bg-iskcon-gold text-white" asChild>
+                <Link to="/auth" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
+              </Button>
+            )}
           </nav>
         </div>
       )}
