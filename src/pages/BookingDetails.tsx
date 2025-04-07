@@ -111,10 +111,6 @@ const BookingDetails = () => {
               <p className="text-sm text-muted-foreground">Duration</p>
               <p className="font-medium">{bookingData.duration} {bookingData.duration === 1 ? "hour" : "hours"}</p>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Estimated Cost</p>
-              <p className="font-medium">₹{(bookingData.hallData.hourly_rate * bookingData.duration).toFixed(2)}</p>
-            </div>
           </div>
         </div>
         

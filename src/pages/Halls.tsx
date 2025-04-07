@@ -71,7 +71,6 @@ const Halls = () => {
                   <div className="h-4 bg-gray-200 rounded w-5/6 mb-6"></div>
                   <div className="flex justify-between mb-4">
                     <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/4"></div>
                   </div>
                 </CardContent>
                 <CardFooter className="bg-gray-50 p-4">
@@ -116,9 +115,6 @@ const Halls = () => {
                     <MapPin className="h-12 w-12 text-muted-foreground/50" />
                   </div>
                 )}
-                <div className="absolute top-4 right-4 bg-black/70 text-white text-sm py-1 px-3 rounded-full">
-                  ₹{hall.hourly_rate}/hour
-                </div>
               </div>
 
               <CardContent className="p-6 flex-grow">
@@ -126,20 +122,10 @@ const Halls = () => {
                 <p className="text-muted-foreground mb-6 line-clamp-3">
                   {hall.description}
                 </p>
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="flex flex-col">
-                    <span className="text-sm text-muted-foreground mb-1">Capacity</span>
-                    <div className="flex items-center font-medium">
-                      <Users className="h-4 w-4 mr-2 text-iskcon-saffron" />
-                      <span>{hall.capacity} people</span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm text-muted-foreground mb-1">Price</span>
-                    <div className="flex items-center font-medium">
-                      <Clock className="h-4 w-4 mr-2 text-iskcon-saffron" />
-                      <span>₹{hall.hourly_rate}/hour</span>
-                    </div>
+                <div className="flex flex-col mb-4">
+                  <div className="flex items-center font-medium">
+                    <Users className="h-4 w-4 mr-2 text-iskcon-saffron" />
+                    <span>{hall.capacity} people</span>
                   </div>
                 </div>
                 

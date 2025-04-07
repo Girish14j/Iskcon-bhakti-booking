@@ -82,7 +82,6 @@ const DateTimeSelection = () => {
           <div className="mt-2 p-4 bg-muted rounded-lg">
             <p className="font-semibold">{hallData.name}</p>
             <p className="text-sm text-muted-foreground">Capacity: {hallData.capacity} people</p>
-            <p className="text-sm text-muted-foreground">₹{hallData.hourly_rate}/hour</p>
           </div>
         )}
       </div>
@@ -167,12 +166,6 @@ const DateTimeSelection = () => {
               <div className="font-medium">{endTime}</div>
               <div>Duration:</div>
               <div className="font-medium">{duration} {duration === 1 ? "hour" : "hours"}</div>
-              {hallData && (
-                <>
-                  <div>Estimated Cost:</div>
-                  <div className="font-medium">₹{(hallData.hourly_rate * duration).toFixed(2)}</div>
-                </>
-              )}
             </div>
           </div>
         </div>
