@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import Halls from "./pages/Halls";
 import DateTimeSelection from "./pages/DateTimeSelection";
 import BookingDetails from "./pages/BookingDetails";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/halls" element={<Halls />} />
             <Route path="/date-time" element={<DateTimeSelection />} />
             <Route path="/booking-details" element={<BookingDetails />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
             {/* Additional routes will be added later */}
             <Route path="*" element={<NotFound />} />
           </Routes>
