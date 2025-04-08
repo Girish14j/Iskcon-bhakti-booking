@@ -40,14 +40,12 @@ interface BookingWithDetails {
   status: BookingStatus;
   admin_notes: string | null;
   created_at: string;
-  user: {
-    full_name: string | null;
-    phone_number: string | null;
-  } | null;
-  hall: {
-    name: string;
-    capacity: number;
-  } | null;
+  user_id: string;
+  hall_id: string;
+  user_name: string | null;
+  user_phone: string | null;
+  hall_name: string | null;
+  hall_capacity: number | null;
 }
 
 const getStatusBadge = (status: BookingStatus) => {
@@ -77,36 +75,42 @@ const AdminDashboard = () => {
   const fetchBookings = async () => {
     setIsLoadingBookings(true);
     try {
-      const { data, error } = await supabase
+      // First get all bookings
+      const { data: bookingsData, error: bookingsError } = await supabase
         .from("bookings")
-        .select(`
-          *,
-          user:user_id (
-            full_name:profiles(full_name),
-            phone_number:profiles(phone_number)
-          ),
-          hall:hall_id (
-            name,
-            capacity
-          )
-        `)
+        .select("*")
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (bookingsError) throw bookingsError;
       
-      // Transform the data to flatten the nested structure
-      const transformedData = data.map((booking) => {
-        return {
+      // Then fetch profile data for each booking
+      const bookingsWithDetails: BookingWithDetails[] = [];
+      
+      for (const booking of bookingsData) {
+        // Get user profile
+        const { data: userData, error: userError } = await supabase
+          .from("profiles")
+          .select("full_name, phone_number")
+          .eq("id", booking.user_id)
+          .single();
+        
+        // Get hall data
+        const { data: hallData, error: hallError } = await supabase
+          .from("halls")
+          .select("name, capacity")
+          .eq("id", booking.hall_id)
+          .single();
+        
+        bookingsWithDetails.push({
           ...booking,
-          user: booking.user ? {
-            full_name: booking.user.full_name?.[0]?.full_name || null,
-            phone_number: booking.user.phone_number?.[0]?.phone_number || null,
-          } : null,
-          hall: booking.hall || null,
-        };
-      });
+          user_name: userData?.full_name || null,
+          user_phone: userData?.phone_number || null,
+          hall_name: hallData?.name || null,
+          hall_capacity: hallData?.capacity || null
+        });
+      }
       
-      setBookings(transformedData as BookingWithDetails[]);
+      setBookings(bookingsWithDetails);
     } catch (error: any) {
       toast({
         title: "Error fetching bookings",
@@ -229,8 +233,8 @@ const AdminDashboard = () => {
                 <TableRow key={booking.id}>
                   <TableCell>{format(new Date(booking.booking_date), "MMM d, yyyy")}</TableCell>
                   <TableCell>{booking.start_time} - {booking.end_time}</TableCell>
-                  <TableCell>{booking.hall?.name || "Unknown"}</TableCell>
-                  <TableCell>{booking.user?.full_name || "Unknown"}</TableCell>
+                  <TableCell>{booking.hall_name || "Unknown"}</TableCell>
+                  <TableCell>{booking.user_name || "Unknown"}</TableCell>
                   <TableCell className="max-w-[200px] truncate">{booking.purpose}</TableCell>
                   <TableCell>{getStatusBadge(booking.status)}</TableCell>
                   <TableCell className="text-right">
@@ -253,7 +257,7 @@ const AdminDashboard = () => {
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
                                   <p className="text-sm text-muted-foreground">Hall</p>
-                                  <p className="font-medium">{selectedBooking.hall?.name}</p>
+                                  <p className="font-medium">{selectedBooking.hall_name}</p>
                                 </div>
                                 <div>
                                   <p className="text-sm text-muted-foreground">Date</p>
@@ -271,9 +275,9 @@ const AdminDashboard = () => {
                               
                               <div className="pt-2">
                                 <p className="text-sm text-muted-foreground">User</p>
-                                <p className="font-medium">{selectedBooking.user?.full_name || "Unknown"}</p>
-                                {selectedBooking.user?.phone_number && (
-                                  <p className="text-sm">{selectedBooking.user.phone_number}</p>
+                                <p className="font-medium">{selectedBooking.user_name || "Unknown"}</p>
+                                {selectedBooking.user_phone && (
+                                  <p className="text-sm">{selectedBooking.user_phone}</p>
                                 )}
                               </div>
                             </div>

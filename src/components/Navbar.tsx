@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Menu, X, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -42,7 +42,10 @@ const Navbar = () => {
             <Link to="/testimonials" className="text-foreground hover:text-iskcon-saffron transition-colors">Testimonials</Link>
             <Link to="/contact" className="text-foreground hover:text-iskcon-saffron transition-colors">Contact</Link>
             {isAdmin && (
-              <Link to="/admin" className="text-foreground hover:text-iskcon-saffron transition-colors">Admin</Link>
+              <Link to="/admin" className="flex items-center gap-1 text-iskcon-saffron font-medium hover:text-iskcon-gold transition-colors">
+                <ShieldCheck className="h-4 w-4" />
+                <span>Admin</span>
+              </Link>
             )}
           </nav>
 
@@ -56,6 +59,12 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>{profile?.full_name || user.email}</DropdownMenuLabel>
+                  {isAdmin && (
+                    <DropdownMenuLabel className="flex items-center gap-1 text-xs text-iskcon-saffron">
+                      <ShieldCheck className="h-3 w-3" />
+                      Administrator
+                    </DropdownMenuLabel>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link to="/my-bookings">My Bookings</Link>
@@ -110,7 +119,10 @@ const Navbar = () => {
             <Link to="/testimonials" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Testimonials</Link>
             <Link to="/contact" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Contact</Link>
             {isAdmin && (
-              <Link to="/admin" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Admin</Link>
+              <Link to="/admin" className="flex items-center gap-1 text-iskcon-saffron font-medium px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>
+                <ShieldCheck className="h-4 w-4" />
+                <span>Admin Dashboard</span>
+              </Link>
             )}
             {user ? (
               <>
