@@ -39,7 +39,7 @@ interface BookingWithDetails {
   attendees: number;
   status: BookingStatus;
   admin_notes: string | null;
-  created_at: string;
+  created_at: string | null;
   user_id: string;
   hall_id: string;
   user_name: string | null;
@@ -101,8 +101,12 @@ const AdminDashboard = () => {
           .eq("id", booking.hall_id)
           .single();
         
+        // Make sure we cast the status to the correct type
+        const typedStatus = booking.status as BookingStatus;
+        
         bookingsWithDetails.push({
           ...booking,
+          status: typedStatus,
           user_name: userData?.full_name || null,
           user_phone: userData?.phone_number || null,
           hall_name: hallData?.name || null,
