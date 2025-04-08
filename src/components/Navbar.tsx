@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Menu, X, User, LogOut, ShieldCheck } from "lucide-react";
+import { Menu, X, User, LogOut, ShieldCheck, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -47,6 +47,12 @@ const Navbar = () => {
                 <span>Admin</span>
               </Link>
             )}
+            {user && !isAdmin && (
+              <Link to="/admin-info" className="flex items-center gap-1 text-muted-foreground hover:text-iskcon-saffron transition-colors">
+                <Info className="h-4 w-4" />
+                <span>Admin Access</span>
+              </Link>
+            )}
           </nav>
 
           <div className="flex items-center gap-4">
@@ -77,6 +83,14 @@ const Navbar = () => {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem asChild>
                         <Link to="/admin">Admin Dashboard</Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  {!isAdmin && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link to="/admin-info">Get Admin Access</Link>
                       </DropdownMenuItem>
                     </>
                   )}
@@ -122,6 +136,12 @@ const Navbar = () => {
               <Link to="/admin" className="flex items-center gap-1 text-iskcon-saffron font-medium px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>
                 <ShieldCheck className="h-4 w-4" />
                 <span>Admin Dashboard</span>
+              </Link>
+            )}
+            {user && !isAdmin && (
+              <Link to="/admin-info" className="flex items-center gap-1 px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>
+                <Info className="h-4 w-4" />
+                <span>Admin Access</span>
               </Link>
             )}
             {user ? (
