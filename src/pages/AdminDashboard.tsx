@@ -71,6 +71,7 @@ const AdminDashboard = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [adminNotes, setAdminNotes] = useState("");
   const [isLoadingBookings, setIsLoadingBookings] = useState(true);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const fetchBookings = async () => {
     setIsLoadingBookings(true);
@@ -135,6 +136,7 @@ const AdminDashboard = () => {
   const handleViewDetails = (booking: BookingWithDetails) => {
     setSelectedBooking(booking);
     setAdminNotes(booking.admin_notes || "");
+    setIsSheetOpen(true);
   };
 
   const updateBookingStatus = async (bookingId: string, status: BookingStatus) => {
@@ -166,7 +168,8 @@ const AdminDashboard = () => {
         description: `The booking has been ${status} successfully.`,
       });
       
-      // Close the sheet by setting selectedBooking to null
+      // Close the sheet
+      setIsSheetOpen(false);
       setSelectedBooking(null);
     } catch (error: any) {
       toast({
@@ -242,99 +245,9 @@ const AdminDashboard = () => {
                   <TableCell className="max-w-[200px] truncate">{booking.purpose}</TableCell>
                   <TableCell>{getStatusBadge(booking.status)}</TableCell>
                   <TableCell className="text-right">
-                    <Sheet>
-                      <SheetTrigger asChild>
-                        <Button variant="ghost" size="sm" onClick={() => handleViewDetails(booking)}>
-                          <Eye className="h-4 w-4 mr-1" /> View
-                        </Button>
-                      </SheetTrigger>
-                      {selectedBooking && selectedBooking.id === booking.id && (
-                        <SheetContent className="w-full sm:max-w-lg">
-                          <SheetHeader>
-                            <SheetTitle>Booking Details</SheetTitle>
-                            <SheetDescription>
-                              Review and manage the booking request
-                            </SheetDescription>
-                          </SheetHeader>
-                          <div className="mt-6 space-y-6">
-                            <div className="p-4 bg-muted rounded-lg space-y-4">
-                              <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                  <p className="text-sm text-muted-foreground">Hall</p>
-                                  <p className="font-medium">{selectedBooking.hall_name}</p>
-                                </div>
-                                <div>
-                                  <p className="text-sm text-muted-foreground">Date</p>
-                                  <p className="font-medium">{format(new Date(selectedBooking.booking_date), "PPP")}</p>
-                                </div>
-                                <div>
-                                  <p className="text-sm text-muted-foreground">Time</p>
-                                  <p className="font-medium">{selectedBooking.start_time} - {selectedBooking.end_time}</p>
-                                </div>
-                                <div>
-                                  <p className="text-sm text-muted-foreground">Status</p>
-                                  <p>{getStatusBadge(selectedBooking.status)}</p>
-                                </div>
-                              </div>
-                              
-                              <div className="pt-2">
-                                <p className="text-sm text-muted-foreground">User</p>
-                                <p className="font-medium">{selectedBooking.user_name || "Unknown"}</p>
-                                {selectedBooking.user_phone && (
-                                  <p className="text-sm">{selectedBooking.user_phone}</p>
-                                )}
-                              </div>
-                            </div>
-                            
-                            <div>
-                              <h4 className="text-sm font-medium mb-2">Purpose</h4>
-                              <div className="p-3 bg-muted/50 rounded-md">
-                                {selectedBooking.purpose}
-                              </div>
-                            </div>
-                            
-                            <div>
-                              <h4 className="text-sm font-medium mb-2">Event Details</h4>
-                              <div className="p-3 bg-muted/50 rounded-md">
-                                <p>Expected Attendees: {selectedBooking.attendees} people</p>
-                              </div>
-                            </div>
-                            
-                            <div>
-                              <h4 className="text-sm font-medium mb-2">Admin Notes</h4>
-                              <Textarea
-                                value={adminNotes}
-                                onChange={(e) => setAdminNotes(e.target.value)}
-                                placeholder="Add notes about this booking"
-                                className="min-h-[100px]"
-                              />
-                            </div>
-                            
-                            {selectedBooking.status === "pending" && (
-                              <div className="flex gap-2 pt-4">
-                                <Button 
-                                  className="flex-1" 
-                                  variant="outline" 
-                                  onClick={() => updateBookingStatus(selectedBooking.id, "rejected")}
-                                  disabled={isUpdating}
-                                >
-                                  <X className="h-4 w-4 mr-2" />
-                                  Reject
-                                </Button>
-                                <Button 
-                                  className="flex-1" 
-                                  onClick={() => updateBookingStatus(selectedBooking.id, "approved")}
-                                  disabled={isUpdating}
-                                >
-                                  <Check className="h-4 w-4 mr-2" />
-                                  Approve
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        </SheetContent>
-                      )}
-                    </Sheet>
+                    <Button variant="ghost" size="sm" onClick={() => handleViewDetails(booking)}>
+                      <Eye className="h-4 w-4 mr-1" /> View
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))
@@ -342,6 +255,98 @@ const AdminDashboard = () => {
           </TableBody>
         </Table>
       </div>
+
+      {/* Separate sheet component instead of nesting in map */}
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+        <SheetContent className="w-full sm:max-w-lg">
+          {selectedBooking && (
+            <>
+              <SheetHeader>
+                <SheetTitle>Booking Details</SheetTitle>
+                <SheetDescription>
+                  Review and manage the booking request
+                </SheetDescription>
+              </SheetHeader>
+              <div className="mt-6 space-y-6">
+                <div className="p-4 bg-muted rounded-lg space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Hall</p>
+                      <p className="font-medium">{selectedBooking.hall_name}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Date</p>
+                      <p className="font-medium">{format(new Date(selectedBooking.booking_date), "PPP")}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Time</p>
+                      <p className="font-medium">{selectedBooking.start_time} - {selectedBooking.end_time}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Status</p>
+                      <p>{getStatusBadge(selectedBooking.status)}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="pt-2">
+                    <p className="text-sm text-muted-foreground">User</p>
+                    <p className="font-medium">{selectedBooking.user_name || "Unknown"}</p>
+                    {selectedBooking.user_phone && (
+                      <p className="text-sm">{selectedBooking.user_phone}</p>
+                    )}
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="text-sm font-medium mb-2">Purpose</h4>
+                  <div className="p-3 bg-muted/50 rounded-md">
+                    {selectedBooking.purpose}
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="text-sm font-medium mb-2">Event Details</h4>
+                  <div className="p-3 bg-muted/50 rounded-md">
+                    <p>Expected Attendees: {selectedBooking.attendees} people</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <h4 className="text-sm font-medium mb-2">Admin Notes</h4>
+                  <Textarea
+                    value={adminNotes}
+                    onChange={(e) => setAdminNotes(e.target.value)}
+                    placeholder="Add notes about this booking"
+                    className="min-h-[100px]"
+                  />
+                </div>
+                
+                {selectedBooking.status === "pending" && (
+                  <div className="flex gap-2 pt-4">
+                    <Button 
+                      className="flex-1" 
+                      variant="outline" 
+                      onClick={() => updateBookingStatus(selectedBooking.id, "rejected")}
+                      disabled={isUpdating}
+                    >
+                      <X className="h-4 w-4 mr-2" />
+                      Reject
+                    </Button>
+                    <Button 
+                      className="flex-1" 
+                      onClick={() => updateBookingStatus(selectedBooking.id, "approved")}
+                      disabled={isUpdating}
+                    >
+                      <Check className="h-4 w-4 mr-2" />
+                      Approve
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };

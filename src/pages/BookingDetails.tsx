@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { format } from "date-fns";
@@ -85,14 +84,7 @@ const BookingDetails = () => {
       };
       
       // Call the edge function to send email
-      await fetch(`${supabase.supabaseUrl}/functions/v1/send-booking-confirmation`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabase.supabaseKey}`,
-        },
-        body: JSON.stringify(emailData),
-      });
+      await sendBookingConfirmation(emailData.bookingId, emailData.hallName, emailData.bookingDate, emailData.startTime, emailData.endTime, emailData.purpose);
       
       toast({
         title: "Booking submitted successfully",
@@ -108,6 +100,42 @@ const BookingDetails = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+  
+  const sendBookingConfirmation = async (bookingId: string, hallName: string, bookingDate: string, startTime: string, endTime: string, purpose: string) => {
+    const userName = user?.email || "";
+    const userEmail = user?.email || "";
+    
+    try {
+      // Use the full Supabase URL instead of accessing protected properties
+      const response = await fetch("https://zpqvsedngdmzaeuorhxt.supabase.co/functions/v1/send-booking-confirmation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpwcXZzZWRuZ2RtemFldW9yaHh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjc4NDIsImV4cCI6MjA1OTYwMzg0Mn0.nt406oPtuPc5AF3gUsAgn3AzrdvTv8Ba6M8EKwRhNos`,
+        },
+        body: JSON.stringify({
+          bookingId,
+          userName,
+          userEmail,
+          hallName,
+          bookingDate: format(new Date(bookingDate), "MMMM do, yyyy"),
+          startTime,
+          endTime,
+          purpose,
+        }),
+      });
+
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.error || "Failed to send confirmation");
+      }
+      
+      return { success: true };
+    } catch (error: any) {
+      console.error("Error sending confirmation:", error);
+      return { success: false, error: error.message };
     }
   };
   
