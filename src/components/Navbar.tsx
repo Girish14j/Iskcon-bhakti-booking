@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Menu, X, User, LogOut, ShieldCheck, Info } from "lucide-react";
+import { Menu, X, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -15,7 +15,7 @@ import {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, profile, isAdmin, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-iskcon-gold/20 bg-background/95 backdrop-blur">
@@ -36,23 +36,9 @@ const Navbar = () => {
           <nav className="hidden md:flex items-center gap-6">
             <Link to="/" className="text-foreground hover:text-iskcon-saffron transition-colors">Home</Link>
             <Link to="/halls" className="text-foreground hover:text-iskcon-saffron transition-colors">Our Halls</Link>
-            {user && (
-              <Link to="/booking" className="text-foreground hover:text-iskcon-saffron transition-colors">Book Now</Link>
-            )}
+            <Link to="/book-now" className="text-foreground hover:text-iskcon-saffron transition-colors">Book Now</Link>
             <Link to="/testimonials" className="text-foreground hover:text-iskcon-saffron transition-colors">Testimonials</Link>
             <Link to="/contact" className="text-foreground hover:text-iskcon-saffron transition-colors">Contact</Link>
-            {isAdmin && (
-              <Link to="/admin" className="flex items-center gap-1 text-iskcon-saffron font-medium hover:text-iskcon-gold transition-colors">
-                <ShieldCheck className="h-4 w-4" />
-                <span>Admin</span>
-              </Link>
-            )}
-            {user && !isAdmin && (
-              <Link to="/admin-info" className="flex items-center gap-1 text-muted-foreground hover:text-iskcon-saffron transition-colors">
-                <Info className="h-4 w-4" />
-                <span>Admin Access</span>
-              </Link>
-            )}
           </nav>
 
           <div className="flex items-center gap-4">
@@ -65,12 +51,6 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>{profile?.full_name || user.email}</DropdownMenuLabel>
-                  {isAdmin && (
-                    <DropdownMenuLabel className="flex items-center gap-1 text-xs text-iskcon-saffron">
-                      <ShieldCheck className="h-3 w-3" />
-                      Administrator
-                    </DropdownMenuLabel>
-                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link to="/my-bookings">My Bookings</Link>
@@ -78,22 +58,6 @@ const Navbar = () => {
                   <DropdownMenuItem asChild>
                     <Link to="/profile">Profile</Link>
                   </DropdownMenuItem>
-                  {isAdmin && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem asChild>
-                        <Link to="/admin">Admin Dashboard</Link>
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                  {!isAdmin && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem asChild>
-                        <Link to="/admin-info">Get Admin Access</Link>
-                      </DropdownMenuItem>
-                    </>
-                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={signOut} className="text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />
@@ -127,23 +91,9 @@ const Navbar = () => {
           <nav className="iskcon-container py-4 flex flex-col gap-4">
             <Link to="/" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Home</Link>
             <Link to="/halls" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Our Halls</Link>
-            {user && (
-              <Link to="/booking" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Book Now</Link>
-            )}
+            <Link to="/book-now" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Book Now</Link>
             <Link to="/testimonials" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Testimonials</Link>
             <Link to="/contact" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>Contact</Link>
-            {isAdmin && (
-              <Link to="/admin" className="flex items-center gap-1 text-iskcon-saffron font-medium px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>
-                <ShieldCheck className="h-4 w-4" />
-                <span>Admin Dashboard</span>
-              </Link>
-            )}
-            {user && !isAdmin && (
-              <Link to="/admin-info" className="flex items-center gap-1 px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>
-                <Info className="h-4 w-4" />
-                <span>Admin Access</span>
-              </Link>
-            )}
             {user ? (
               <>
                 <Link to="/my-bookings" className="text-foreground hover:text-iskcon-saffron transition-colors px-4 py-2 rounded-md hover:bg-muted" onClick={() => setIsMenuOpen(false)}>My Bookings</Link>

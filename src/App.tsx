@@ -13,7 +13,9 @@ import Halls from "./pages/Halls";
 import DateTimeSelection from "./pages/DateTimeSelection";
 import BookingDetails from "./pages/BookingDetails";
 import AdminDashboard from "./pages/AdminDashboard";
-import AdminInfo from "./pages/AdminInfo";
+import Testimonials from "./pages/Testimonials";
+import Contact from "./pages/Contact";
+import BookNow from "./pages/BookNow";
 
 const queryClient = new QueryClient();
 
@@ -33,8 +35,9 @@ const App = () => (
             <Route path="/booking-details" element={<BookingDetails />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin-info" element={<AdminInfo />} />
-            {/* Additional routes will be added later */}
+            <Route path="/testimonials" element={<Testimonials />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/book-now" element={<BookNow />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

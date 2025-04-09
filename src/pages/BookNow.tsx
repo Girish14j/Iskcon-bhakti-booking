@@ -1,16 +1,14 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Users, Clock, ArrowRight, MapPin } from "lucide-react";
-
-import { supabase } from "@/integrations/supabase/client";
+import { Calendar, Users, Clock, ArrowRight, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 
 type Hall = {
   id: string;
@@ -21,11 +19,12 @@ type Hall = {
   is_active: boolean;
 };
 
-const Halls = () => {
+const BookNow = () => {
   const [halls, setHalls] = useState<Hall[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchHalls = async () => {
@@ -53,6 +52,16 @@ const Halls = () => {
   }, [toast]);
 
   const handleSelectHall = (hall: Hall) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to book a hall",
+        variant: "destructive",
+      });
+      navigate("/auth", { state: { returnTo: "/book-now" } });
+      return;
+    }
+    
     navigate("/date-time", { state: { hallData: hall } });
   };
 
@@ -98,12 +107,11 @@ const Halls = () => {
         <div className="container max-w-5xl mx-auto py-16 px-4">
           <div className="mb-10 text-center">
             <h1 className="text-4xl font-bold mb-4 text-foreground font-cormorant">
-              Sacred <span className="text-iskcon-saffron">Spaces</span> for Your Events
+              Book a <span className="text-iskcon-saffron">Hall</span> Now
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Choose from our selection of beautiful halls for your next spiritual gathering, celebration, or community event
             </p>
-            <Separator className="mt-8 max-w-md mx-auto bg-iskcon-gold/30" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -121,7 +129,7 @@ const Halls = () => {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-muted">
-                      <MapPin className="h-12 w-12 text-muted-foreground/50" />
+                      <Users className="h-12 w-12 text-muted-foreground/50" />
                     </div>
                   )}
                 </div>
@@ -134,16 +142,12 @@ const Halls = () => {
                   <div className="flex flex-col mb-4">
                     <div className="flex items-center font-medium">
                       <Users className="h-4 w-4 mr-2 text-iskcon-saffron" />
-                      <span>{hall.capacity} people</span>
+                      <span>Capacity: {hall.capacity} people</span>
                     </div>
-                  </div>
-                  
-                  <div className="mt-2">
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Capacity Usage</span>
-                      <span className="font-medium">{hall.capacity} max</span>
+                    <div className="flex items-center font-medium mt-2">
+                      <Clock className="h-4 w-4 mr-2 text-iskcon-saffron" />
+                      <span>Available for flexible hours</span>
                     </div>
-                    <Progress value={100} className="h-2 bg-muted" />
                   </div>
                 </CardContent>
 
@@ -152,7 +156,7 @@ const Halls = () => {
                     className="w-full bg-iskcon-saffron hover:bg-iskcon-gold text-white" 
                     onClick={() => handleSelectHall(hall)}
                   >
-                    Select This Hall <ArrowRight className="ml-2 h-4 w-4" />
+                    Book This Hall <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardFooter>
               </Card>
@@ -174,4 +178,4 @@ const Halls = () => {
   );
 };
 
-export default Halls;
+export default BookNow;
