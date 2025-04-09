@@ -36,7 +36,7 @@ export const BookingDetails = ({
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-lg">
+      <SheetContent className="w-full sm:max-w-lg overflow-y-auto max-h-screen pb-20">
         <SheetHeader>
           <SheetTitle>Booking Details</SheetTitle>
           <SheetDescription>
@@ -98,7 +98,7 @@ export const BookingDetails = ({
           </div>
           
           {booking.status === "pending" && (
-            <div className="flex gap-2 pt-4">
+            <div className="flex gap-2 pt-4 pb-10">
               <Button 
                 className="flex-1" 
                 variant="outline" 
