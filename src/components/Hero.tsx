@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const heroImages = [
   {
-    url: "https://images.unsplash.com/photo-1566231693437-4406573d4b3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    url: "https://t3.ftcdn.net/jpg/02/68/07/54/360_F_268075433_Kcr08wdDBEJeymN9AlbOfFih9luNfH2p.jpg",
     alt: "Beautifully decorated Iskcon temple hall",
   },
   {
