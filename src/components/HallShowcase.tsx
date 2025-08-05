@@ -88,7 +88,7 @@ const HallShowcase = () => {
                   <Link to={`/halls/${hall.id}`}>View Details</Link>
                 </Button>
                 <Button className="bg-iskcon-saffron hover:bg-iskcon-gold text-white" asChild>
-                  <Link to={`/booking?hall=${hall.id}`}>Book Now</Link>
+                  <Link to='/book-now'>Book Now</Link>
                 </Button>
               </CardFooter>
             </Card>
