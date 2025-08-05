@@ -64,9 +64,9 @@ const Hero = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild className="bg-iskcon-saffron hover:bg-iskcon-gold text-white text-lg px-8 py-6">
-              <Link to="/booking">Book Now</Link>
+              <Link to="/book-now">Book Now</Link>
             </Button>
-            <Button asChild variant="outline" className="border-white text-white hover:bg-white/10 text-lg px-8 py-6">
+            <Button asChild variant="outline" className="border-white text-black hover:bg-white/10 text-lg px-8 py-6">
               <Link to="/halls">Explore Halls</Link>
             </Button>
           </div>
