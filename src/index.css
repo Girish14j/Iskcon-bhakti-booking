@@ -1,0 +1,125 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 48 33% 97%;
+    --foreground: 40 36% 16%;
+
+    --card: 48 33% 99%;
+    --card-foreground: 40 36% 16%;
+
+    --popover: 48 33% 99%;
+    --popover-foreground: 40 36% 16%;
+
+    --primary: 28 100% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 45 89% 52%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 48 8% 92%;
+    --muted-foreground: 40 12% 40%;
+
+    --accent: 210 70% 56%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 40 6% 90%;
+    --input: 40 6% 90%;
+    --ring: 28 100% 56%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 48 33% 97%;
+    --sidebar-foreground: 40 36% 16%;
+    --sidebar-primary: 28 100% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 48 8% 92%;
+    --sidebar-accent-foreground: 40 36% 16%;
+    --sidebar-border: 40 6% 90%;
+    --sidebar-ring: 45 89% 52%;
+  }
+
+  .dark {
+    --background: 40 36% 12%;
+    --foreground: 48 33% 97%;
+
+    --card: 40 36% 16%;
+    --card-foreground: 48 33% 97%;
+
+    --popover: 40 36% 16%;
+    --popover-foreground: 48 33% 97%;
+
+    --primary: 28 100% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 45 89% 52%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 40 12% 22%;
+    --muted-foreground: 40 12% 70%;
+
+    --accent: 210 70% 56%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 40 12% 22%;
+    --input: 40 12% 22%;
+    --ring: 28 100% 56%;
+    
+    --sidebar-background: 40 36% 12%;
+    --sidebar-foreground: 48 33% 97%;
+    --sidebar-primary: 28 100% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 12% 22%;
+    --sidebar-accent-foreground: 48 33% 97%;
+    --sidebar-border: 40 12% 22%;
+    --sidebar-ring: 45 89% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-poppins;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-cormorant font-bold;
+  }
+}
+
+@layer components {
+  .iskcon-container {
+    @apply container px-4 md:px-6 py-8 mx-auto;
+  }
+  
+  .gold-border {
+    @apply border-2 border-iskcon-gold;
+  }
+
+  .lotus-divider {
+    @apply relative flex items-center justify-center my-8;
+  }
+
+  .lotus-divider::before,
+  .lotus-divider::after {
+    @apply content-[''] flex-1 border-t border-iskcon-gold opacity-30;
+  }
+
+  .lotus-icon {
+    @apply mx-4 text-iskcon-lotus;
+  }
+}
