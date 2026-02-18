@@ -5,15 +5,15 @@ import { Link } from "react-router-dom";
 
 const heroImages = [
   {
-    url: "https://t3.ftcdn.net/jpg/02/68/07/54/360_F_268075433_Kcr08wdDBEJeymN9AlbOfFih9luNfH2p.jpg",
+    url: "https://i.pinimg.com/736x/0a/d4/78/0ad478609ed4e2479f860588708800a4.jpg",
     alt: "Beautifully decorated Iskcon temple hall",
   },
   {
-    url: "https://images.unsplash.com/photo-1581578017093-cd30fce4eae7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    url: "https://i.pinimg.com/1200x/b7/42/75/b742754bb04f95fccfd0ba26c953a1c6.jpg",
     alt: "Traditional Indian ceremony in hall",
   },
   {
-    url: "https://images.unsplash.com/photo-1571566882372-1598d88abd90?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    url: "https://i.pinimg.com/736x/79/8f/74/798f7455e2d57e79cd35039ff71a6d61.jpg",
     alt: "Community gathering in large temple hall",
   },
 ];
@@ -32,7 +32,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative h-[70vh] sm:h-[80vh] overflow-hidden">
+    <section className="relative min-h-screen h-[70vh] sm:h-[80vh] overflow-hidden">
       {/* Hero Image Carousel */}
       <div className="absolute inset-0 z-0">
         {heroImages.map((image, index) => (
