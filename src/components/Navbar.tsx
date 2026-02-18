@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import {
   DropdownMenu,
@@ -12,28 +12,40 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+// Add any routes that have a full-screen hero here
+const HERO_ROUTES = ["/"];
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { user, profile, signOut } = useAuth();
+  const location = useLocation();
+
+  const hasHero = HERO_ROUTES.includes(location.pathname);
+  // Transparent only on hero pages before scrolling
+  const isTransparent = hasHero && !isScrolled;
 
   useEffect(() => {
+    // Reset scroll state on every route change
+    setIsScrolled(false);
+
+    if (!hasHero) return;
+
     const handleScroll = () => {
-      // Adjust this threshold to match when your hero section ends
       const heroHeight = window.innerHeight * 0.85;
       setIsScrolled(window.scrollY > heroHeight);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location.pathname, hasHero]);
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
-        isScrolled
-          ? "bg-background/98 backdrop-blur-md border-b border-iskcon-gold/20 shadow-sm"
-          : "bg-transparent border-b border-white/10"
+        isTransparent
+          ? "bg-transparent border-b border-white/10"
+          : "bg-background/98 backdrop-blur-md border-b border-iskcon-gold/20 shadow-sm"
       }`}
     >
       <div className="iskcon-container">
@@ -48,7 +60,7 @@ const Navbar = () => {
             <div className="hidden sm:block">
               <h1
                 className={`text-2xl font-bold transition-colors duration-500 ${
-                  isScrolled ? "text-foreground" : "text-white drop-shadow-lg"
+                  isTransparent ? "text-white drop-shadow-lg" : "text-foreground"
                 }`}
               >
                 Iskcon{" "}
@@ -56,7 +68,7 @@ const Navbar = () => {
               </h1>
               <p
                 className={`text-xs transition-colors duration-500 ${
-                  isScrolled ? "text-muted-foreground" : "text-white/70"
+                  isTransparent ? "text-white/70" : "text-muted-foreground"
                 }`}
               >
                 Hall Booking Service
@@ -74,7 +86,7 @@ const Navbar = () => {
                     key={label}
                     to={paths[i]}
                     className={`text-sm font-medium tracking-wide transition-all duration-300 hover:text-iskcon-saffron relative group ${
-                      isScrolled ? "text-foreground" : "text-white/90 drop-shadow"
+                      isTransparent ? "text-white/90 drop-shadow" : "text-foreground"
                     }`}
                   >
                     {label}
@@ -92,9 +104,9 @@ const Navbar = () => {
                   <Button
                     variant="outline"
                     className={`rounded-full w-10 h-10 p-0 transition-all duration-500 ${
-                      isScrolled
-                        ? "border-border bg-background"
-                        : "border-white/40 bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
+                      isTransparent
+                        ? "border-white/40 bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
+                        : "border-border bg-background"
                     }`}
                   >
                     <User className="h-5 w-5" />
@@ -112,10 +124,7 @@ const Navbar = () => {
                     <Link to="/profile">Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={signOut}
-                    className="text-destructive"
-                  >
+                  <DropdownMenuItem onClick={signOut} className="text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
@@ -124,9 +133,9 @@ const Navbar = () => {
             ) : (
               <Button
                 className={`hidden sm:flex transition-all duration-500 ${
-                  isScrolled
-                    ? "bg-iskcon-saffron hover:bg-iskcon-gold text-white"
-                    : "bg-white/15 hover:bg-white/25 text-white border border-white/30 backdrop-blur-sm shadow-lg"
+                  isTransparent
+                    ? "bg-white/15 hover:bg-white/25 text-white border border-white/30 backdrop-blur-sm shadow-lg"
+                    : "bg-iskcon-saffron hover:bg-iskcon-gold text-white"
                 }`}
                 asChild
               >
@@ -136,7 +145,7 @@ const Navbar = () => {
 
             <button
               className={`block md:hidden transition-colors duration-500 ${
-                isScrolled ? "text-foreground" : "text-white drop-shadow"
+                isTransparent ? "text-white drop-shadow" : "text-foreground"
               }`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
@@ -155,9 +164,9 @@ const Navbar = () => {
       {isMenuOpen && (
         <div
           className={`md:hidden border-t transition-all duration-500 ${
-            isScrolled
-              ? "border-iskcon-gold/20 bg-background/98 backdrop-blur-md"
-              : "border-white/10 bg-black/50 backdrop-blur-md"
+            isTransparent
+              ? "border-white/10 bg-black/50 backdrop-blur-md"
+              : "border-iskcon-gold/20 bg-background/98 backdrop-blur-md"
           }`}
         >
           <nav className="iskcon-container py-4 flex flex-col gap-1">
@@ -172,9 +181,9 @@ const Navbar = () => {
                 key={label}
                 to={path}
                 className={`transition-colors px-4 py-2.5 rounded-md text-sm font-medium ${
-                  isScrolled
-                    ? "text-foreground hover:text-iskcon-saffron hover:bg-muted"
-                    : "text-white/90 hover:text-white hover:bg-white/10"
+                  isTransparent
+                    ? "text-white/90 hover:text-white hover:bg-white/10"
+                    : "text-foreground hover:text-iskcon-saffron hover:bg-muted"
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -187,9 +196,9 @@ const Navbar = () => {
                 <Link
                   to="/my-bookings"
                   className={`transition-colors px-4 py-2.5 rounded-md text-sm font-medium ${
-                    isScrolled
-                      ? "text-foreground hover:text-iskcon-saffron hover:bg-muted"
-                      : "text-white/90 hover:text-white hover:bg-white/10"
+                    isTransparent
+                      ? "text-white/90 hover:text-white hover:bg-white/10"
+                      : "text-foreground hover:text-iskcon-saffron hover:bg-muted"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -198,9 +207,9 @@ const Navbar = () => {
                 <Link
                   to="/profile"
                   className={`transition-colors px-4 py-2.5 rounded-md text-sm font-medium ${
-                    isScrolled
-                      ? "text-foreground hover:text-iskcon-saffron hover:bg-muted"
-                      : "text-white/90 hover:text-white hover:bg-white/10"
+                    isTransparent
+                      ? "text-white/90 hover:text-white hover:bg-white/10"
+                      : "text-foreground hover:text-iskcon-saffron hover:bg-muted"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -209,10 +218,7 @@ const Navbar = () => {
                 <Button
                   variant="destructive"
                   className="mt-2"
-                  onClick={() => {
-                    signOut();
-                    setIsMenuOpen(false);
-                  }}
+                  onClick={() => { signOut(); setIsMenuOpen(false); }}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>

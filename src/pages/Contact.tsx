@@ -70,7 +70,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow pt-20">
         <section className="py-16">
           <div className="iskcon-container">
             <div className="text-center mb-12">

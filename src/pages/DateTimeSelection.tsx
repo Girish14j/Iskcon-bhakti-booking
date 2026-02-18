@@ -153,7 +153,7 @@ const DateTimeSelection = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow pt-20">
         <div className="container max-w-4xl mx-auto py-10 px-4">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">Select Date & Time</h1>

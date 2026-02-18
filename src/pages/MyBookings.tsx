@@ -135,7 +135,7 @@ const MyBookings = () => {
     return (
       <div className="min-h-screen bg-background">
         <Navbar />
-        <div className="iskcon-container py-20">
+        <div className="iskcon-container py-20 pt-20">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Please Sign In</h1>
             <p className="text-muted-foreground">You need to be signed in to view your bookings.</p>
@@ -147,10 +147,10 @@ const MyBookings = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-20">
       <Navbar />
       
-      <div className="iskcon-container py-8">
+      <div className="iskcon-container py-8 pt-20">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">My Bookings</h1>
           <p className="text-muted-foreground">View and track all your hall booking requests</p>

@@ -69,7 +69,7 @@ const BookNow = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
-        <main className="flex-grow">
+        <main className="flex-grow pt-20">
           <div className="container max-w-5xl mx-auto py-20 px-4 text-center">
             <div className="animate-pulse">
               <div className="h-10 bg-gray-200 rounded w-1/3 mx-auto mb-8"></div>
@@ -103,7 +103,7 @@ const BookNow = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow pt-20">
         <div className="container max-w-5xl mx-auto py-16 px-4">
           <div className="mb-10 text-center">
             <h1 className="text-4xl font-bold mb-4 text-foreground font-cormorant">
