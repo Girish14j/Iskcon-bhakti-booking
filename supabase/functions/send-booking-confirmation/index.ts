@@ -1,11 +1,11 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { serve } from "https://deno.land/std@0.192.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
+import { Deno } from "https://deno.land/x/dotenv@v3.2.2/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
-
 interface BookingEmailRequest {
   bookingId: string;
   userEmail: string;
@@ -172,6 +172,8 @@ serve(async (req) => {
     if (error) {
       throw error;
     }
+
+    console.log("Email sent successfully");
 
     return new Response(
       JSON.stringify({ success: true, message: "Email sent successfully" }),
