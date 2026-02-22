@@ -7,7 +7,7 @@ import BookingProcess from "@/components/BookingProcess";
 import Testimonials from "@/components/Testimonials";
 import CallToAction from "@/components/CallToAction";
 import Footer from "@/components/Footer";
-import ChatWidget from "@components/chatbot/ChatWidget";
+import ChatWidget from "@/components/chatbot/chatWidget";
 
 const Index = () => {
   return (
