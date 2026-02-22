@@ -2,8 +2,8 @@
     import { MessageCircle, X, Minimize2 } from "lucide-react";
     import { Button } from "@/components/ui/button";
     import { ScrollArea } from "@/components/ui/scroll-area";
-    import ChatMessage from "./chatMessage";
-    import ChatInput from "./chatInput";
+    import ChatMessage from "./ChatMessage";
+    import ChatInput from "./ChatInput";
     import { supabase } from "@/integrations/supabase/client";
     import { useToast } from "@/hooks/use-toast";
 
